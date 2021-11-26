@@ -44,20 +44,20 @@ class SensorController extends Controller
 
         //$device = UltraDevice::where("device", $request->device);
         if(!$ultraDevice) {
-            UltraDevice::create([
+            $newUltraDevice = UltraDevice::create([
                 'device' => $device->id,
                 'is_active' => $request->is_active,
                 'sensor_delay' => $request->sensor_delay
             ]);
-            return response()->json(['message' => "İşlem balarılı"], 201);
+            return response()->json(['message' => "İşlem balarılı", 'values' => $newUltraDevice], 201);
         }
         UltraDevice::destroy($ultraDevice->id);
-        UltraDevice::create([
+        $newUltraDevice = UltraDevice::create([
             'device' => $device->id,
             'is_active' => $request->is_active,
             'sensor_delay' => $request->sensor_delay
         ]);
-        return response()->json(['message' => "İşlem balarılı"], 201);
+        return response()->json(['message' => "İşlem balarılı", 'values' => $newUltraDevice], 201);
     }
 
     /**
