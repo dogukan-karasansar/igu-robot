@@ -108,6 +108,14 @@ export default class App extends Component {
     }
   }*/
 
+  sendValue(value) {
+    BluetoothSerial.write(value).then((res) => {
+      console.log(res);
+      console.log("Bşarıyla Gönderildi");
+      this.setState({ connected: true });
+    }).catch((e) => console.log(e));
+  }
+
   render() {
     return (
       <>
@@ -131,6 +139,32 @@ export default class App extends Component {
                     data={this.state.devices}
                     renderItem={item => this._renderItem(item)}
                     keyExtractor={item => item.id} />
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity style={{
+              padding: 10,
+              margin: 10,
+              backgroundColor: "#FF9292",
+              borderRadius: 5,
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+            }}
+                              onPress={() => this.sendValue('off')}>
+              <Text style={{ color: "white", fontSize: 18 }}>Sensörü Kapat</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+              padding: 10,
+              margin: 10,
+              backgroundColor: "#C1FFD7",
+              borderRadius: 5,
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+            }}
+                              onPress={() => this.sendValue('on')}>
+              <Text style={{ color: "grey", fontSize: 18 }}>Sensörü Aç</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </>
     )
