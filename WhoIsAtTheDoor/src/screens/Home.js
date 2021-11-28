@@ -35,21 +35,30 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.7} onPress={() => isPower(status)}>
-        <View style={[styles.power, {backgroundColor: powerColor}]}>
-          {status == false ? (
+      <View style={[styles.power, {backgroundColor: powerColor}]}>
+        {status == false ? (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => isPower(status)}
+            style={{zIndex: 0.5}}>
             <Image
               style={styles.powerIcon}
               source={require('../assets/images/power-on.png')}
             />
-          ) : (
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => isPower(status)}
+            style={{zIndex: 0.5}}>
             <Image
               style={styles.powerIcon}
               source={require('../assets/images/power-off.png')}
             />
-          )}
-        </View>
-      </TouchableOpacity>
+          </TouchableOpacity>
+        )}
+      </View>
+
       <View style={styles.notificationCounter}>
         <Text
           style={{
@@ -98,6 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 90,
   },
   powerIcon: {
+    
     width: 100,
     height: 100,
   },
