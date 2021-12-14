@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   FlatList,
-  ScrollView,
+  ScrollView, Image, TextInput,
 } from "react-native";
 import BluetoothSerial from "react-native-bluetooth-serial";
 
@@ -22,6 +22,7 @@ export default class App extends Component {
       devices: [],
       unPairDevices: [],
       connected: false,
+      commandPass: "",
     };
   }
 
@@ -126,6 +127,16 @@ export default class App extends Component {
 
   }
 
+  sendPass(pass) {
+    const newPass = pass.split("");
+    for (let i = 0; i < newPass.length; i++) {
+      BluetoothSerial.write(newPass[i]).then((res) => {
+        console.log(res);
+        this.setState({ connected: true });
+      }).catch((e) => console.log(e));
+    }
+  }
+
   render() {
     return (
       <>
@@ -145,11 +156,55 @@ export default class App extends Component {
                             onPress={this.discoverAvailableDevice.bind(this)}>
             <Text style={{ color: "grey", fontSize: 18 }}>Cihaz Tara</Text>
           </TouchableOpacity>*/}
-          <FlatList contentContainerStyle={{ flex: 0.3, justifyContent: "center", alignItems: "center" }}
+
+          <FlatList contentContainerStyle={{ flex: 0.3, justifyContent: "center", alignItems: "center", zIndex: 5000 }}
                     data={this.state.devices}
                     renderItem={item => this._renderItem(item)}
                     keyExtractor={item => item.id} />
+
+
+          <Image source={require("./assets/indir.png")}
+                 style={{
+                   zIndex: 0,
+                   justifyContent: "center",
+                   alignItems: "center",
+                   position: "absolute",
+                   borderRadius: 150,
+                 }} />
+          <View style={{
+            flex: 1,
+            flexDirection: "row",
+            marginBottom: 100, zIndex: 0,
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+            <TextInput style={{
+              width: 200,
+              height: 50,
+              margin: 10,
+              borderRadius: 10,
+              backgroundColor: "white",
+              color: "#FF9292",
+            }}
+                       placeholder="Şifre"
+                       placeholderTextColor={"#FF9292"}
+                       onChangeText={(text) => this.setState({ commandPass: text })}
+            />
+            <TouchableOpacity style={{
+              height: 50,
+              width: 120,
+              backgroundColor: "#C1FFD7",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 5,
+            }}
+                              onPress={() => this.sendPass(this.state.commandPass)}
+            >
+              <Text style={{ color: "grey" }}>ONAYLA</Text>
+            </TouchableOpacity>
+          </View>
           <View style={{ flexDirection: "row" }}>
+
             <TouchableOpacity style={{
               padding: 10,
               margin: 10,
@@ -175,6 +230,7 @@ export default class App extends Component {
               <Text style={{ color: "grey", fontSize: 18 }}>Sensörü Aç</Text>
             </TouchableOpacity>
           </View>
+          <Text>Powered By Doğukan Karasansar</Text>
         </View>
       </>
     )
